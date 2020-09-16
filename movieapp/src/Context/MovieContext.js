@@ -1,79 +1,88 @@
-import React, {useState, createContext, useEffect} from "react";
+import React, { useState, createContext, useEffect } from "react";
+
 export const MovieContext = createContext();
 
-export const MovieState = ({children}) => {
-    const [hiddenMenu, setHiddenMenu] = useState(true);
-    const [activeLink, setActiveLink] = useState("Popular");
-    const [showPagination, setShowPagination] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
-    const [movies, setMovies] = useState([]);
-    const [search, setSearch] = useState("");
-    const [currentPage,setCurrentPage] = useState(1);
-    const [PopularMovies, setPopularMovies] = useState([]);
+export const MovieState = ({ children }) => {
 
-    const API_KEY = "9d4fbae6d45a1f406cc115a66a4de03d";
+  const [hiddenMenu, setHiddenMenu] = useState(true);
 
-    const getMovies = async () => {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${currentPage}`
-        );
+  const [activeLink, setActiveLink] = useState("Popular");
 
-        const data = await response.json();
-        if(search.trim() === ""){
-            setMovies(data);
-        }
-    };
+  const [showPagination, setShowPagination] = useState(true);
 
-    const handleSearch = async(e) => {
-        e.preventDefault();
-        if(search.trim() === ""){
-            return;
-        }
+  const [isLoading, setIsLoading] = useState(false);
 
+  const [movies, setMovies] = useState([]);
+
+  const [search, setSearch] = useState("");
+ 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [popularMovies, setPopularMovies] = useState([]);
+
+  const API_KEY = "9d4fbae6d45a1f406cc115a66a4de03d";
+
+  const getMovies = async () => {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${currentPage}`
+    );
+    const data = await response.json();
+    if (search.trim() === "") {
+      setMovies(data);
+    }
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (search.trim() === "") {
+      return;
+    }
+    const searchResponse = await fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${search}&page=${currentPage}`
+    );
     const searchData = await searchResponse.json();
     setMovies(searchData);
     setShowPagination(false);
-};
+  };
 
-const newPage = (direction) => {
-    if(direction === "next"){
-        setCurrentPage(currentPage + 1);
-    } else if(direction === "previous" && currentPage !== 1){
-        setCurrentPage(currentPage - 1);
+  const newPage = (direction) => {
+    if (direction === "next") {
+      setCurrentPage(currentPage + 1);
+      setIsLoading(true);
+    } else if (direction === "previous" && currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
     }
-};
+  };
 
-const getPopularMovies = async () =>{
+  const getPopularMovies = async () => {
     const popularMoviesResponse = await fetch(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=3`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=3`
     );
-
     const popularMoviesData = await popularMoviesResponse.json();
     setPopularMovies(popularMoviesData);
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     getPopularMovies();
-}, []);
+  }, []);
 
-useEffect(() => {
-    if(search.trim() === ""){
-        setShowPagination(true);
+  useEffect(() => {
+    if (search.trim() === "") {
+      setShowPagination(true);
     }
-
     getMovies();
-}, [search, currentPage]);
+  }, [search, currentPage]);
 
-useEffect((){
+  useEffect(() => {
     const loadingTimeout = setTimeout(() => {
-        setIsLoading(false);
+      setIsLoading(false);
     }, 1300);
-    return() => clearTimeout(loadingTimeout);
-}, [movies, currentPage]);
+    return () => clearTimeout(loadingTimeout);
+  }, [movies, currentPage]);
 
-return(
+  return (
     <MovieContext.Provider
-    value={{
+      value={{
         movies,
         setMovies,
         search,
@@ -91,12 +100,10 @@ return(
         popularMovies,
         setPopularMovies,
         hiddenMenu,
-        setHiddenMenu
-
-    }}
->
-    {children}
-</MovieContext.Provider>
-    );
-
+        setHiddenMenu,
+      }}
+    >
+      {children}
+    </MovieContext.Provider>
+  );
 };

@@ -3,21 +3,29 @@ import { css, jsx } from "@emotion/core";
 import { useContext } from "react";
 import { MovieContext } from "../../Context/MovieContext";
 import Container from "../GlobalComponents/Container";
+import Loader from "../GlobalComponents/Loader";
 
-const PopularMovies = () => {
-  const { popularMovies } = useContext(MovieContext);
+const Movies = () => {
+  const { movies, isLoading } = useContext(MovieContext);
 
   return (
-    <div css={styles} className="popularMovies">
+    <div css={styles} className="movies">
       <Container>
-        {popularMovies.results &&
-          popularMovies.results.map((popularMovieItem, index) => (
+        {movies.results && movies.results.length === 0 && (
+          <h1 className="error">Result not found</h1>
+        )}
+        {!isLoading ? (
+          movies.results &&
+          movies.results.map((movieItem, index) => (
             <img
               key={index}
-              src={`https://image.tmdb.org/t/p/w400/${popularMovieItem.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w400/${movieItem.poster_path}`}
               alt="poster"
             />
-          ))}
+          ))
+        ) : (
+          <Loader />
+        )}
       </Container>
     </div>
   );
@@ -27,7 +35,7 @@ const styles = css`
   width: 100%;
   .container {
     &:nth-child(1) {
-      height: 81vh;
+      height: 68vh;
       overflow-y: scroll;
       display: flex;
       justify-content: space-between;
@@ -79,4 +87,4 @@ const styles = css`
   }
 `;
 
-export default PopularMovies;
+export default Movies;

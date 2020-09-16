@@ -1,15 +1,14 @@
-import React from 'react';
-import {MovieState} from "./Context/MovieContext.js";
+import React from "react";
+import { MovieState } from "./Context/MovieContext";
 import Hero from "./components/Hero/Hero";
 import "./App.css";
 
-const App = () =>{
-  return(
+const App = () => {
+  return (
     <MovieState>
-      <Hero/>
+      <Hero />
     </MovieState>
   );
 };
-
 
 export default App;

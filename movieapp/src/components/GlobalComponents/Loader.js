@@ -1,54 +1,51 @@
-import {css, jsx} from "@emotion/core";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
 
 const Loader = () => <div css={styles} className="loader"></div>;
 
-const styles = css `
-
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 50px;
-height: 10px;
-background: #3498db;
-border-radius: 5px;
-animation: spinner 1.8s ease-in-out infinite;
-&:before.
-&:after{
-    position:absolute;
+const styles = css`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 10px;
+  background: #3498db;
+  border-radius: 5px;
+  animation: spinner 1.8s ease-in-out infinite;
+  &:before,
+  &:after {
+    position: absolute;
     display: block;
     content: "";
     animation: spinner 1.8s ease-in-out infinite;
     height: 10px;
     border-radius: 5px;
-}
-
-&:before {
+  }
+  &:before {
     top: -20px;
     left: 10px;
     width: 40px;
     background: #ef4836;
-}
-
-&:after {
+  }
+  &:after {
     bottom: -20px;
     width: 35px;
-    backgorund: #f5ab35;
-}
+    background: #f5ab35;
+  }
 
-@keyframes spinner {
+  @keyframes spinner {
     0% {
-        transform: translate(40px);
+      transform: translateX(40px);
     }
 
     50% {
-        transform: translateX(-30px);
+      transform: translateX(-30px);
     }
-
     100% {
-        transform: translateX(40px);
+      transform: translateX(40px);
     }
-}
+  }
 `;
 
 export default Loader;

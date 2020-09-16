@@ -1,19 +1,21 @@
-import{css, jsx} from "@emotion/core";
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
 import HeroNav from "./HeroNav/HeroNav";
-import OutPut from "../OutPut/Output";
+import Output from "../OutPut/Output";
 
 const Hero = () => {
-    return(
-        <section css={styles} className="hero">
-            <HeroNav/>
-            <OutPut/>
-        </section>
-    );
+  return (
+    <section css={styles} className="hero">
+      <HeroNav />
+      <Output />
+    </section>
+  );
 };
 
-const styles = css `
-
-width: 100%;
-min-height: 100vh;
-background: #1b1c22;
+const styles = css`
+  width: 100%;
+  min-height: 100vh;
+  background: #1b1c22;
 `;
+
+export default Hero;
